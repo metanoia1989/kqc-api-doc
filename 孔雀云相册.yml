@@ -1,0 +1,23 @@
+openapi: '3.0.2'
+info:
+  title: 孔雀巢云相册
+  version: '1.0'
+  description: '孔雀云相册后端API文档，给云相册小程序使用的东西。'
+  contact:
+    name: Adam Smith
+    url: https://github.com/metanoia1989
+    email: m15171641694@163.com
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+servers:
+  - url: https://album.kongquechao.com
+    description: 线上服务器
+  - url: http://cqc-album.test
+    description: 本地服务器
+paths:
+  /test:
+    get:
+      responses:
+        '200':
+          description: OK
