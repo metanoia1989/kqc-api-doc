@@ -11,6 +11,7 @@ info:
     name: Apache 2.0
     url: https://www.apache.org/licenses/LICENSE-2.0.html
   version: '1.0'
+
 servers:
   - url: https://album.kongquechao.com
     description: 线上服务器
@@ -26,9 +27,141 @@ servers:
           - http://cqc-album2.test
           - http://cqc-album3.test
           - http://cqc-album4.test
+
+    
 paths:
   /test:
     get:
       responses:
         '200':
           description: OK
+  /posts:
+    get:
+      tags:
+       - Posts
+      summary: 返回所有的文章
+      responses:
+        '200':
+          description: JSON格式的博客文章数组
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Posts'
+                
+    post:
+      tags:
+        - Posts
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Post'
+      responses:
+        '200':
+          description: 请求成功，将会创建博客文章
+          content:
+            application/json:
+              schema:
+                type: string
+
+  /posts/{id}:
+    get:
+      tags:
+        - Posts
+      description: 根据文章ID返回对应的文章
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: 用户必须传递id
+          schema:
+            type: string
+         
+      responses:
+        '200':
+          description: 一篇文章的JSON格式
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Post'
+
+    put:
+      tags:
+        - Posts
+      summary: 更新一篇文章
+      description: 通过ID完整地更新指定文章 
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: 用户必须传递id
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Post'
+      responses:
+        '200':
+          description: '完整地更新文章'
+
+    patch:
+      tags:
+        - Posts
+      summary: 更新一篇文章
+      description: 通过ID来更新文章部分字段
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: 用户必须传递id
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchPost'
+      responses:
+        '200':
+          description: OK
+
+    delete:
+      description: 
+      responses:
+        '200':
+          description: OK
+
+
+        
+components:
+  schemas:
+    Post:
+      type: object
+      properties:
+        id:
+          type: string
+          description: "文章ID"
+        userId:
+          type: string
+          description: "文章用户ID"
+        title:
+          type: string
+          description: "文章标题"
+        body:
+          type: string
+          description: "文章内容"
+      required:
+        - id
+        - userId
+        - title
+        - body
+    Posts:
+      type: array
+      items:
+        $ref: '#/components/schemas/Post'
+    
