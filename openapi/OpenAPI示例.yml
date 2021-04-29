@@ -1,0 +1,336 @@
+openapi: '3.0.2'
+info:
+  title: OpenAPI示例
+  description: |
+    # 想法
+    OpenAPI示例，上面的title会作为导入之后的文件夹名称  
+
+
+    使用这些API来获取用户的云相册，也可以提供给喜帖小程序使用。
+
+
+    竟然支持`Markdown`，是我没有想到的，**Amazing**啊。<br>   
+    tags 会作为分类标志，支持列表，所以最好单独抽离出来，方便统一修改。<br>   
+    有全局tags，可以排序，可以统一地修改名称。<br>
+    summary 会作为接口请求名称，description 会作为示例响应名称。<br>      
+    externalDocs 引用外部的资源，包括文档。<br>     
+    
+    # Introduction    
+    This API is documented in **OpenAPI format** and is based on
+    [Petstore sample](http://petstore.swagger.io/) provided by [swagger.io](http://swagger.io) team.
+    It was **extended** to illustrate features of [generator-openapi-repo](https://github.com/Rebilly/generator-openapi-repo)
+    tool and [ReDoc](https://github.com/Redocly/redoc) documentation. In addition to standard
+    OpenAPI syntax we use a few [vendor extensions](https://github.com/Redocly/redoc/blob/master/docs/redoc-vendor-extensions.md).
+
+    # OpenAPI Specification
+    This API is documented in **OpenAPI format** and is based on
+    [Petstore sample](http://petstore.swagger.io/) provided by [swagger.io](http://swagger.io) team.
+    It was **extended** to illustrate features of [generator-openapi-repo](https://github.com/Rebilly/generator-openapi-repo)
+    tool and [ReDoc](https://github.com/Redocly/redoc) documentation. In addition to standard
+    OpenAPI syntax we use a few [vendor extensions](https://github.com/Redocly/redoc/blob/master/docs/redoc-vendor-extensions.md).
+
+    # Cross-Origin Resource Sharing
+    This API features Cross-Origin Resource Sharing (CORS) implemented in compliance with  [W3C spec](https://www.w3.org/TR/cors/).
+    And that allows cross-domain communication from the browser.
+    All responses have a wildcard same-origin which makes them completely public and accessible to everyone, including any code on any site.
+
+    # Authentication
+    Petstore offers two forms of authentication:
+      - API Key
+      - OAuth2
+    OAuth2 - an open protocol to allow secure authorization in a simple
+    and standard method from web, mobile and desktop applications.
+    <SecurityDefinitions />
+
+  termsOfService: https://smartbear.com/terms-of-use/
+  contact:
+    name: Adam Smith
+    url: https://github.com/metanoia1989
+    email: m15171641694@163.com
+  x-logo:
+    url: 'https://redocly.github.io/redoc/petstore-logo.png'
+    altText: Petstore logo
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.0
+  
+externalDocs:
+  url: http://commonmark.org/help/
+  description: 查看更多的信息，大部分的description字段是支持CommonMark标准的，点击即可
+
+servers:
+  - url: https://album.kongquechao.com
+    description: 线上服务器
+  - url: http://cqc-album.test
+    description: 本地服务器
+  - url: '{host}'
+    description: 自定义服务器
+    variables:
+      host:
+        default: http://cqc-album.test
+        enum:
+          - http://cqc-album.test
+          - http://cqc-album2.test
+          - http://cqc-album3.test
+          - http://cqc-album4.test
+
+    
+paths:
+  /posts:
+
+    get:
+      tags:
+       - Posts
+      summary: 返回所有的文章
+      description: GET请求，返回所有文章的数据
+      responses:
+        '200':
+          description: JSON格式的博客文章数组
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Posts'
+      externalDocs:
+        description: 额外的描述信息
+        url: http://api.example.com/docs/user-operations/
+                
+    post:
+      tags:
+        - Posts
+      summary: 创建文章
+      description: 创建一篇文章
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Post'
+      responses:
+        '200':
+          description: 请求成功，将会创建博客文章
+          content:
+            application/json:
+              schema:
+                type: string
+
+  /posts/{id}:
+    get:
+      tags:
+        - Posts
+      summary: 根据ID返回文章
+      description: >
+        根据文章ID返回对应的文章
+
+        -----------
+
+        A detailed description of the operation.
+
+
+        Use markdown for rich text representation,
+
+
+        such as **bold**, *italic*, and [links](https://swagger.io).
+      operationId: getPostById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: 用户必须传递id
+          schema:
+            type: string
+         
+      responses:
+        '200':
+          description: 一篇文章的JSON格式
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Post'
+
+    put:
+      tags:
+        - Posts
+      summary: 更新一篇文章
+      description: 通过ID完整地更新指定文章 
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: 用户必须传递id
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Post'
+      responses:
+        '200':
+          description: '完整地更新文章'
+
+    patch:
+      tags:
+        - Posts
+      summary: 更新一篇文章
+      description: 通过ID来更新文章部分字段
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: 用户必须传递id
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchPost'
+      responses:
+        '200':
+          description: OK
+
+    delete:
+      tags:
+       - Posts
+      summary: 删除一篇文章
+      description: 根据ID删除指定的文章
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: 用户必须传递这个postId参数
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 资源删除成功
+  /comments:
+    get:
+      tags:
+        - Comments
+      summary: 返回评论
+      description: 通过文章ID返回文章的所有评论
+      parameters:
+        - in: query
+          name: postId
+          schema:
+            type: string
+          description: 想要获取评论的文章ID
+      responses:
+        '200':
+          description: JSON格式的评论列表
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Comments'
+        
+components:
+  schemas:
+    Post:
+      type: object
+      properties:
+        id:
+          type: string
+          description: "文章ID"
+        userId:
+          type: string
+          description: "文章用户ID"
+        title:
+          type: string
+          description: "文章标题"
+        body:
+          type: string
+          description: "文章内容"
+      required:
+        - id
+        - userId
+        - title
+        - body
+      example:
+        userId: 1
+        id: 1
+        title: "The First Post"
+        body: "we are building a blog post API using OpenAPI Specification."
+    Posts:
+      type: array
+      items:
+        $ref: '#/components/schemas/Post'
+      example: [
+        {
+          "userId": 1,
+          "id": 1,
+          "title": "First post",
+          "body": "This is the first post body."
+        },
+        {
+          "userId": 1,
+          "id": 2,
+          "title": "Second post",
+          "body": "This is the second post content."
+        },
+        {
+          "userId": 1,
+          "id": 3,
+          "title": "Another post",
+          "body": "Other post content."
+        }
+      ]
+    PatchPost:
+      type: object
+      properties:
+        id:
+          type: string
+          description: "The post id."
+        userId:
+          type: string
+          description: "The post userId"
+        title:
+          type: string   
+          description: "The title of the post"
+        body:
+          type: string
+          description: "The body content of the post"
+    Comment:
+      type: object
+      properties:
+        id:
+          type: string
+          description: "The comment id."
+        postId:
+          type: string
+          description: "The comment postId."
+        name:
+          type: string
+          description: "The name of the comment."
+        email:
+          type: string
+          description: "The email of the user who posted the comment."
+        body:
+          type: string
+          description: "The comment body."
+      example:
+        id: 1
+        postId: 1
+        name: "The first comment"
+        email: "example@example.com"
+        body: "This is the first comment!"
+    Comments:
+      description: "The array of comment objects"
+      type: array
+      items:
+        $ref: '#/components/schemas/Comment'
+        
+tags:
+  - name: Comments
+    description: 评论   
+    externalDocs:
+      description: tags内容
+      url: https://swagger.io/docs/specification/grouping-operations-with-tags/ 
+  - name: Posts
+    description: 关于文章的所有内容   
+    externalDocs:
+      description: baidu
+      url: https://www.baidu.com/s?wd=%E6%B5%8B%E8%AF%95

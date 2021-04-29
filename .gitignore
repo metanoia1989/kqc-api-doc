@@ -1,0 +1,11 @@
+node_modules/
+
+yarn.lock
+yarn-error.log
+
+.openapi-generator
+.openapi-generator-ignore
+openapitools.json
+
+build/
+redoc.standalone.js

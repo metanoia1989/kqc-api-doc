@@ -1,0 +1,18 @@
+{
+  "dependencies": {
+    "redoc": "^2.0.0-rc.53"
+  },
+  "name": "kqc-api-doc",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/metanoia1989/kqc-api-doc",
+  "author": "Rick <m15171641694@163.com>",
+  "license": "MIT",
+  "scripts": {
+    "copyredoc": "cpx  node_modules/redoc/bundles/redoc.standalone.js ./"
+  },
+  "devDependencies": {
+    "@openapitools/openapi-generator-cli": "^2.2.6",
+    "cpx": "^1.5.0"
+  }
+}
