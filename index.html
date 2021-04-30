@@ -1,15 +1,177 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
+
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OpenAPI文档</title>
+    <title>ReDoc Demo: Multiple apis</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" href="assets/images/favicon.ico" type="image/x-icon"/>
+    <!-- Load an icon library to show a hamburger menu (bars) on small screens -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <style>
+        body {
+            margin: 0;
+            padding-top: 50px;
+            font-family: /*西文*/-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Ubuntu,Helvetica Neue,Helvetica,Arial,
+                /*中文*/PingFang SC,Hiragino Sans GB,Microsoft YaHei UI,Microsoft YaHei,Source Han Sans CN,sans-serif;
+        }
+
+        .topnav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 100;
+            overflow: hidden;
+            background-color: #333;
+            margin: 0;
+            height: 50px;
+        }
+
+
+        .topnav .menu-item, .topnav a, .logo-title {
+            float: left;
+            display: block;
+            color: #f2f2f2;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+            font-size: 17px;
+        }
+
+        /* Logo特别处理 START */
+        .logo-title {
+            padding-left: 50px!important;
+            padding-right: 50px!important;
+            box-sizing: border-box;
+            height: 50px;
+            display: flex!important;
+            align-items: center;
+        }
+        .logo-title:hover {
+            background-color: #333!important;
+            color: white!important;
+        }
+        .logo-title .logo {
+            height: 100%;
+            box-sizing: border-box;
+            margin-right: 5px;
+        }
+        /* Logo特别处理 END */
+
+        .topnav .menu-item:hover {
+            background-color: #ddd;
+            color: black;
+        }
+
+        .topnav .menu-item.active {
+            background-color: #04AA6D;
+            color: white;
+        }
+
+        .topnav .icon {
+            display: none;
+        }
+
+        @media screen and (max-width: 600px) {
+            .topnav .menu-item:not(:first-child) {
+                display: none;
+            }
+
+            .topnav a.icon {
+                float: right;
+                display: block;
+            }
+        }
+
+        @media screen and (max-width: 600px) {
+            .topnav.responsive {
+                /* position: relative; */
+            }
+
+            .topnav.responsive .icon {
+                position: absolute;
+                right: 0;
+                top: 0;
+            }
+
+            .topnav.responsive .menu-item {
+                float: none;
+                display: block;
+                text-align: left;
+            }
+        }
     </style>
 </head>
+
 <body>
-    <redoc spec-url="openapi/OpenAPI示例.yml"></redoc>
-    <script src="redoc.standalone.js"> </script> 
+
+    <!-- Top navigation placeholder -->
+    <div id="links_container" class="topnav">
+        <div class="menu-item logo-title">
+            <img src="assets/images/kqc_bg2.jpg" class="logo" alt="Logo">
+            <span>孔雀巢API文档</span>
+        </div>
+    </div>
+
+    <redoc scroll-y-offset="body > .topnav"></redoc>
+
+    <script src="assets/js/redoc.standalone.js"> </script>
+    <script>
+        function myFunction() {
+          var x = document.querySelector(".topnav");
+          if (x.className === "topnav") {
+            x.className += " responsive";
+          } else {
+            x.className = "topnav";
+          }
+        }
+
+        // list of APIS
+        var apis = [
+            {
+                name: 'PetStore',
+                url: './openapi/OpenAPI示例.yml'
+            },
+            {
+                name: 'Instagram',
+                url: './openapi/OpenAPI示例.yml'
+            },
+            {
+                name: 'Google Calendar',
+                url: 'https://api.apis.guru/v2/specs/instagram.com/1.0.0/swagger.yaml'
+            }
+        ];
+
+        // initially render first API
+        Redoc.init(apis[0].url);
+
+        function onClick() {
+            document.querySelectorAll('.menu-item').forEach(item => {
+                item.classList.remove('active')
+            });
+            this.classList.add('active')
+            var url = this.getAttribute('data-link');
+            Redoc.init(url);
+        }
+
+        // dynamically building navigation items
+        var $list = document.getElementById('links_container');
+        apis.forEach(function (api) {
+            var $listitem = document.createElement('li');
+            $listitem.classList.add("menu-item")
+            $listitem.setAttribute('data-link', api.url);
+            $listitem.innerText = api.name;
+            $listitem.addEventListener('click', onClick);
+            $list.appendChild($listitem);
+        });
+        document.querySelector(".menu-item:not(.logo-title)").classList.add('active')
+        // 添加展开按钮
+        var $aItem = document.createElement('a');
+        $aItem.setAttribute('href', 'javascript:void(0);');
+        $aItem.classList.add('icon');
+        $aItem.addEventListener('click', myFunction);
+        $aItem.innerHTML = '<i class="fa fa-bars"></i>';
+        $list.appendChild($aItem);
+    </script>
 </body>
+
 </html>

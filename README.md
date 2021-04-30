@@ -5,8 +5,4 @@
 用OpenAPI的规范来编写文档，这样方便导入。而且是非侵入式的，之前一个公司用的 [APIDoc](https://apidocjs.com/) 是写在代码注释中的，侵入了代码了。   
 本来想把文档文件放在项目里，但是很多个项目，文档分散了也不好编辑，后续处理还要一个个文件夹查看太麻烦了，所以单独建一个仓库。    
 
-使用方式，先安装依赖，然后发布文件，再将 public 设置为网站根目录
-```sh
-$ yarn install
-$ yarn run copyredoc
-```
+将所有写好的openapi文档放在 openapi目录下，然后改动 index.html 中的配置。   
