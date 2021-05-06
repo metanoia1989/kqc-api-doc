@@ -14,6 +14,7 @@ info:
     有全局tags，可以排序，可以统一地修改名称。<br>
     summary 会作为接口请求名称，description 会作为示例响应名称。<br>      
     externalDocs 引用外部的资源，包括文档。<br>     
+    支持相对URL，所有的其他的URL定义，都可以相对于 servers 中的URL路径来，避免重复写域名，也方便切换。<br>
     
     # Introduction    
     This API is documented in **OpenAPI format** and is based on
@@ -74,11 +75,46 @@ servers:
           - http://cqc-album2.test
           - http://cqc-album3.test
           - http://cqc-album4.test
-
+  - url: '{protocol}://{prefix}.kongquechao.com'
+    description: 喜帖后端API
+    variables:
+      protocol:
+        default: https
+        enum: 
+          - https
+          - http
+      prefix:
+        default: invt
+        enum: 
+          - invt
+          - dev.invt
     
 paths:
-  /posts:
+  # ************ 覆盖全局的Servers Start ************* 
+  /files:
+    description: File upload and download operations 
+    servers:
+      - url: https://files.example.com
+        description: Override base path for all operations with the /files path        
+    post:
+      tags:
+        - File
+      responses:
+        '200':
+          description: 上传下载文件
+  /ping:
+    get:
+      tags:
+        - File
+      servers:
+        - url: https://echo.example.com
+          description: Override base path for the GET /ping operation
+      responses:
+        '200':
+          description: ping响应
+  # ************ 覆盖全局的Servers End ************* 
 
+  /posts:
     get:
       tags:
        - Posts
@@ -207,6 +243,7 @@ paths:
       responses:
         '200':
           description: 资源删除成功
+
   /comments:
     get:
       tags:
@@ -322,8 +359,13 @@ components:
       type: array
       items:
         $ref: '#/components/schemas/Comment'
-        
+    # FileHost:
+    #   description: "文件上传的URL"
+    #   type: string
+
 tags:
+  - name: File
+    description: 文件上传
   - name: Comments
     description: 评论   
     externalDocs:
