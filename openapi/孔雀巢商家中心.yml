@@ -1,0 +1,147 @@
+openapi: '3.0.2'
+info:
+  title: 孔雀巢商家中心
+  description: |
+    # 简述
+    给孔雀巢商家后台使用  
+
+    # 验证授权
+    这些API使用以下的授权验证方式
+      - API Key  An API key is a token that a client provides when making API calls.
+      
+    <SecurityDefinitions />
+
+  termsOfService: https://smartbear.com/terms-of-use/
+  contact:
+    name: Adam Smith
+    url: https://github.com/metanoia1989
+    email: m15171641694@163.com
+  x-logo:
+    url: '/assets/images/logo.gif'
+    altText: 孔雀巢商家中心
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.0
+
+servers:
+  - url: https://kqc.kongquechao.com
+    description: 线上服务器
+  - url: http://cqc-master.test
+    description: 本地服务器
+
+security:
+  - ApiKeyAuth: []
+    
+tags:
+  - name: Auth
+    description: 安全验证
+    
+paths:
+  /studio/login:
+    post:
+      tags:
+        - Auth
+      summary: 商家登陆
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                account:
+                  type: string
+                  description: 账号
+                password:
+                  type: string
+                  description: 密码
+                code:
+                  type: string
+                  description: 微信授权登陆code
+              required:
+                - account
+                - password
+      responses:
+        '200':
+          description: 登陆成功的信息
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginSuccess'
+                 
+           
+          
+    
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: query
+      name: token
+
+  schemas:
+    Response:
+      type: object
+      properties:
+        code:
+          type: integer 
+        msg:
+          type: string
+        data: {}
+      required:
+        - code
+        - msg
+
+    LoginSuccess:
+      allOf:
+        - $ref: '#/components/schemas/Response'
+        - type: object
+          required:
+            - data
+          properties:
+            data:
+              type: object 
+              properties:
+                token:
+                  type: string
+                studio_id:
+                  type: integer
+                is_super:
+                  type: integer
+                  enum:
+                    - 0
+                    - 1
+                role_ids:
+                  type: integer
+                login_times:
+                  type: object
+                vip:
+                  type: object
+                uid:
+                  type: integer
+                agent_id:
+                  type: integer
+                is_agent:
+                  type: integer
+                  enum:
+                    - 0
+                    - 1
+          example:
+            token: 8zEesdfsdfhWR3gQqfFs1
+            studio_id: 5x
+            is_super: 1
+            role_ids: '0'
+            login_times:
+              days: 0
+              scale: 90%
+              tips: 真棒！请继续保持！
+            vip:
+              stop_time: '2021-04-21'
+              try: 1
+              surplus: -1
+            uid: 1
+            agent_id: 1xx2
+            is_agent: 1
+                
