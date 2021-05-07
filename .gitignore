@@ -8,7 +8,7 @@ yarn-error.log
 openapitools.json
 
 build/
-redoc.standalone.js
+# redoc.standalone.js
 
 nginx.htaccess
 .htaccess
