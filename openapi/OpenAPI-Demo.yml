@@ -88,15 +88,75 @@ servers:
         enum: 
           - invt
           - dev.invt
+            
+security:
+  - ApiKeyAuth: []
+  - BasicAuth: []
+  - OAuth2:
+    - read
+    - write
+  - OpenId:
+    - scopeA
+    - scopeB
+
     
 paths:
+  # ************ Security START ************* 
+  /billing_info:
+    get:
+      tags:
+        - Security
+      summary: Gets the account billing info
+      security:
+        - OAuth2: [admin]  # 不同范围的OAuth
+      responses:
+        '200':
+          description: OK
+        '401':
+          description: Not Authenticated
+        '403':
+          description: Access token dos not have the required scope
+  /pong:
+    get:
+      tags:
+        - Security
+      summary: Checks if the server is ruuning
+      security: [] # No security
+      responses:
+        '200':
+          description: Server is up and ruuning
+        default:
+          description: Something is wrong
+  /users:
+    get:
+      tags:
+        - Security
+      summary: Get a list of users 
+      security:
+        - OAuth2: [read]
+      responses:
+        '200':
+          description: OK
+    post:
+      tags:
+        - Security
+      summary: Add a user
+      security:
+        - OAuth2: [write]
+      responses:
+        '200':
+          description: OK
+  # ************ Security END *************** 
+
   # ************ 覆盖全局的Servers Start ************* 
   /files:
+    summary: 文件上传   
     description: File upload and download operations 
     servers:
       - url: https://files.example.com
         description: Override base path for all operations with the /files path        
     post:
+      summary: 文件上传和下载
       tags:
         - File
       responses:
@@ -104,6 +164,7 @@ paths:
           description: 上传下载文件
   /ping:
     get:
+      summary: ping 服务器
       tags:
         - File
       servers:
@@ -113,6 +174,84 @@ paths:
         '200':
           description: ping响应
   # ************ 覆盖全局的Servers End ************* 
+ 
+  # ************ Path示例 Start ************* 
+  /users/{id}:
+    get:
+      tags:
+        - Path
+      summary: Gets a user by ID
+      description: >
+        A details description of the operation.
+        Use markdown for rich text representation
+        suce as **bold**, *italic*, and [links](https://swagger.io)
+      operationId: getUserById
+      parameters:
+        - name: id
+          in: path
+          description: User ID
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+      externalDocs:
+        description: Learn more about user operations provided by this API.
+        url: http://api.example.com/docs/user-operations/
+
+  # query string 
+  /users/findByRole:
+    get:
+      tags:
+        - Path
+      summary: 通过角色查找用户
+      parameters:
+        - in: query
+          name: role
+          schema:
+            type: string
+            enum: [user, poweruser, admin]
+          required: true
+      responses:
+        '200':
+          description: OK
+  /users/findByName:
+    get:
+      tags:
+        - Path
+      summary: 通过名字查找用户
+      parameters:
+        - in: query
+          name: firstName
+          schema:
+            type: string
+          required: true
+        - in: query
+          name: lastName
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: OK
+  
+  # deprecated operations
+  /users/findByTags:
+    get:
+      tags:
+        - Path
+      deprecated: true
+      summary: 通过标签查找用户
+      responses:
+        '200':
+          description: OK
+  # ************ Path示例 END *************** 
 
   /posts:
     get:
@@ -362,10 +501,56 @@ components:
     # FileHost:
     #   description: "文件上传的URL"
     #   type: string
+    #   
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+      required:
+        - id
+        - name
+  
+  securitySchemes:
+    BasicAuth:
+      type: http
+      scheme: basic
+      
+    BearerAuth:
+      type: http
+      scheme: bearer
+      
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key
+      
+    OpenID:
+      type: openIdConnect
+      openIdConnectUrl: https://example.com/.well-known/openid-configuration
+      
+    OAuth2:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://example.com/oauth/authorize
+          tokenUrl: https://exmaple/oauth/token
+          scopes:
+            read: Grants read access
+            write: Grants write access
+            admin: Grants access to admin operations
+    
 
 tags:
+  - name: Security
+    description: 安全验证
   - name: File
     description: 文件上传
+  - name: Path
+    description: Path语法示例
   - name: Comments
     description: 评论   
     externalDocs:
