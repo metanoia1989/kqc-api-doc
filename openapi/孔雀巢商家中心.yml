@@ -346,6 +346,11 @@ components:
           type: integer
         studio_name: 
           type: string
+        apply_state: 
+          description: null为未认证， 1 未审核， 2 未通过认证， 3 已认证
+          oneOf:
+            - nullable: true 
+              enum: [1, 2, 3]
         studio_manager_phone: 
           type: integer
         studio_logo: 
@@ -373,6 +378,7 @@ components:
       example:
         studio_id: 1416
         studio_name: 水晶之恋婚纱摄影
+        apply_state: null
         studio_manager_phone: 13651330545
         studio_logo: https://img.kongquechao.com/public/static/studio_logo/mini/20210421/202104211753069181.png
         studio_askphone:
