@@ -100,6 +100,46 @@
                 text-align: left;
             }
         }
+        
+        .rapidoc {
+        }
+        .tooltip {
+          position: relative;
+          display: inline-block;
+          border-bottom: 1px dotted black;
+        }
+
+        .tooltip .tooltiptext {
+          visibility: hidden;
+          width: 248px;
+          background-color: black;
+          color: #fff;
+          text-align: center;
+          border-radius: 6px;
+          padding: 5px 0;
+          top: 11px;
+          margin-left: 15px;
+
+          /* Position the tooltip */
+          position: absolute;
+          z-index: 1;
+        }
+        .tooltiptext::after {
+            position: absolute;
+            content: '';
+            width: 0px;
+            height: 0px;
+            border: 8px solid;
+            border-color: transparent black 
+ transparent transparent;
+
+            left: -16px;
+            top: 8px;
+        }
+
+        .tooltip:hover .tooltiptext {
+          visibility: visible;
+        }
     </style>
 </head>
 
@@ -110,6 +150,10 @@
         <div class="menu-item logo-title">
             <img src="assets/images/logo.gif" class="logo" alt="Logo">
             <span>孔雀巢API文档</span>
+            <a href="./rapidoc.html" class="rapidoc tooltip">
+                RapiDoc
+                <span class="tooltiptext">点击进入在线交互接口文档</span>
+            </a>
         </div>
     </div>
 
