@@ -3,7 +3,7 @@ info:
   title: 孔雀巢商家中心
   description: |
     # 简述
-    给孔雀巢商家后台使用  
+    给孔雀巢商家后台使用，线上服务器地址 <https://kqc.kongquechao.com>
 
     # 验证授权
     这些API使用以下的授权验证方式
@@ -17,7 +17,7 @@ info:
     url: https://github.com/metanoia1989
     email: m15171641694@163.com
   x-logo:
-    url: '/assets/images/logo.gif'
+    url: '/assets/images/logo-brand.png'
     altText: 孔雀巢商家中心
   license:
     name: Apache 2.0
@@ -36,6 +36,10 @@ security:
 tags:
   - name: Auth
     description: 安全验证
+  - name: Shop
+    description: 旗下店铺
+  - name: Util
+    description: 工具相关
     
 paths:
   /studio/login:
@@ -70,6 +74,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/LoginSuccess'
+
   /studio/generalize/fetchMchToken:
     post:
       tags:
@@ -95,8 +100,158 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/LoginSuccess'
-           
-          
+                
+  
+  /studio/generalize/studioList:
+    get:
+      tags:
+        - Shop
+      summary: 获取推广员旗下店铺信息
+      parameters:
+        - name: studio
+          description: 影楼ID、名称或账号
+          in: query
+          schema:
+            oneOf:
+              - type: string
+                format: int64
+                nullable: true
+              - type: integer
+                format: int64
+                nullable: true
+        - name: province
+          description: 省份ID
+          in: query
+          schema:
+            type: integer
+            format: int64
+            nullable: true
+        - name: city
+          description: 城市ID
+          in: query
+          schema:
+            type: integer
+            format: int64
+            nullable: true
+        - name: area
+          description: 地区ID
+          in: query
+          schema:
+            type: integer
+            format: int64
+            nullable: true
+        - name: page
+          description: 第几页数据
+          in: query
+          schema:
+            type: integer
+            format: int64
+            default: 1
+            minimum: 1
+        - name: limit
+          description: 每页数量
+          in: query
+          schema:
+            type: integer
+            format: int64
+            default: 15
+            minimum: 1
+            
+      responses:
+        '200':
+          description: 推广员旗下店铺列表
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ShopList'
+
+  /studio/util/provinces:
+    get:
+      tags:
+        - Util
+      summary: 获取省份列表
+      responses:
+        '200':
+          description: 省份列表数据
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ObjectResponse'
+              example:
+                '110000': 北京市
+                '120000': 天津市
+                '130000': 河北省
+                '140000': 山西省
+                '420000': 湖北省
+                '430000': 湖南省
+                '440000': 广东省
+                '650000': 新疆维吾尔自治区
+                '710000': 台湾省
+                '810000': 香港特别行政区
+                '820000': 澳门特别行政区
+                '830000': 印度尼西亚
+                '840000': 马尔代夫
+                '850000': 泰国
+                '860000': 法国
+                '870001': 韩国
+  /studio/util/citys:
+    get:
+      tags:
+        - Util
+      summary: 获取城市列表
+      parameters:
+        - name: provinceid
+          in: query
+          description: 省份ID
+          required: true
+          schema:
+            type: integer
+            format: int64
+          example: 440000
+      responses:
+        '200':
+          description: 城市列表数据
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ObjectResponse'
+              example:
+                '440100': 广州市
+                '440200': 韶关市
+                '440300': 深圳市
+                '440400': 珠海市
+                '440500': 汕头市
+                '440600': 佛山市
+                '440700': 江门市
+                '440800': 湛江市
+  /studio/util/areas:
+    get:
+      tags:
+        - Util
+      summary: 获取地区列表
+      parameters:
+        - name: cityid
+          in: query
+          description: 城市ID
+          required: true
+          schema:
+            type: integer
+            format: int64
+          example: 440100
+      responses:
+        '200':
+          description: 地区列表数据
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ObjectResponse'
+              example:
+                '440101': 市辖区
+                '440103': 荔湾区
+                '440104': 越秀区
+                '440105': 海珠区
+                '440106': 天河区
+   
     
 components:
   securitySchemes:
@@ -107,6 +262,7 @@ components:
 
   schemas:
     Response:
+      description: 接口响应公共字段
       type: object
       properties:
         code:
@@ -118,7 +274,20 @@ components:
         - code
         - msg
 
+    ObjectResponse:
+      description: 任意对象数据的响应
+      allOf:
+        - $ref: '#/components/schemas/Response'
+        - type: object
+          required:
+            - data
+          properties:
+            data:
+              type: object
+      
+
     LoginSuccess:
+      description: 登陆成功的响应
       allOf:
         - $ref: '#/components/schemas/Response'
         - type: object
@@ -168,4 +337,64 @@ components:
             uid: 1
             agent_id: 1xx2
             is_agent: 1
-                
+
+    Shop:
+      description: 店铺列表的单个项
+      type: object
+      properties:
+        studio_id: 
+          type: integer
+        studio_name: 
+          type: string
+        studio_manager_phone: 
+          type: integer
+        studio_logo: 
+          type: string
+        studio_askphone:
+          type: string
+        province: 
+          type: string
+        city: 
+          type: string
+        area: 
+          type: string
+        studio_regist_time: 
+          type: string
+        login_last_time: 
+          type: string
+        studio_address: 
+          type: string
+        studio_balance: 
+          type: string
+        studio_count_look: 
+          type: string
+        studio_login_ac: 
+          type: string
+      example:
+        studio_id: 1416
+        studio_name: 水晶之恋婚纱摄影
+        studio_manager_phone: 13651330545
+        studio_logo: https://img.kongquechao.com/public/static/studio_logo/mini/20210421/202104211753069181.png
+        studio_askphone:
+        province: 北京市
+        city: 北京市
+        area: 丰台区
+        studio_regist_time: '2021-04-21 17:40:43'
+        login_last_time: 1618998743
+        studio_address: 点击设置店铺地址
+        studio_balance: '0.00'
+        studio_count_look: 12
+        studio_login_ac: yingshang        
+
+    ShopList:
+      description: 推广员店铺列表响应
+      allOf:
+        - $ref: '#/components/schemas/Response'
+        - type: object
+          required:
+            - data
+          properties:
+            data:
+              type: array
+              items:
+                $ref: '#/components/schemas/Shop'
