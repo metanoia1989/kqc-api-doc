@@ -17,7 +17,7 @@ info:
     url: https://github.com/metanoia1989
     email: m15171641694@163.com
   x-logo:
-    url: '/assets/images/logo-brand.png'
+    url: './assets/images/logo-brand.png'
     altText: 孔雀巢商家中心
   license:
     name: Apache 2.0
