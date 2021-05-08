@@ -70,7 +70,31 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/LoginSuccess'
-                 
+  /studio/generalize/fetchMchToken:
+    post:
+      tags:
+        - Auth
+      summary: 商家店铺ID换取Token
+      description: 用商家店铺ID和推广员token换取其商家登陆token
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                sid:
+                  type: integer
+                  description: 商家店铺ID
+              required:
+                - sid
+      responses:
+        '200':
+          description: 商家登陆成功的响应
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginSuccess'
            
           
     
