@@ -41,7 +41,7 @@ tags:
     
 paths:
   /api/wechat/login:
-    post:
+    get:
       tags:
         - Wechat
       summary: 微信静默登陆 
