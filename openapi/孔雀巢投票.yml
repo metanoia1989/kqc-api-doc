@@ -1,0 +1,184 @@
+openapi: '3.0.2'
+info:
+  title: 孔雀巢投票
+  description: |
+    # 简述
+    给孔雀巢商家后台使用，线上服务器地址 <http://vote.kongquechao.com>
+
+    # 验证授权
+    这些API使用以下的授权验证方式
+      - API Key  An API key is a token that a client provides when making API calls.
+      
+    <SecurityDefinitions />
+
+  termsOfService: https://smartbear.com/terms-of-use/
+  contact:
+    name: Adam Smith
+    url: https://github.com/metanoia1989
+    email: m15171641694@163.com
+  x-logo:
+    url: './assets/images/logo-brand.png'
+    altText: 孔雀巢投票
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.0
+
+servers:
+  - url: http://vote.kongquechao.com
+    description: 线上服务器
+  - url: http://cqc-vote.test
+    description: 本地服务器
+
+security:
+  - ApiKeyAuth: []
+    
+tags:
+  - name: Auth
+    description: 安全验证
+  - name: Wechat
+    description: 微信相关
+    
+paths:
+  /api/wechat/login:
+    post:
+      tags:
+        - Wechat
+      summary: 微信静默登陆 
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                code:
+                  type: string
+                  description: 微信授权登陆code
+              required:
+                - code
+      responses:
+        '200':
+          description: 静默登陆成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginSuccess'
+
+  /api/wechat/share:
+    post:
+      tags:
+        - Wechat
+      summary: 获取微信分享参数
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                url:
+                  type: string
+                  description: 分享的URL
+              required:
+                - code
+      responses:
+        '200':
+          description: 微信分享参数
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ShareParam'
+   
+    
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: query
+      name: token
+
+  schemas:
+    Response:
+      description: 接口响应公共字段
+      type: object
+      properties:
+        code:
+          type: integer 
+        msg:
+          type: string
+        data: {}
+      required:
+        - code
+        - msg
+
+    ObjectResponse:
+      description: 任意对象数据的响应
+      allOf:
+        - $ref: '#/components/schemas/Response'
+        - type: object
+          required:
+            - data
+          properties:
+            data:
+              type: object
+      
+
+    LoginSuccess:
+      description: 登陆成功的响应
+      allOf:
+        - $ref: '#/components/schemas/Response'
+        - type: object
+          required:
+            - data
+          properties:
+            data:
+              type: object 
+              properties:
+                token:
+                  type: string
+                open_id:
+                  type: string
+
+          example:
+            msg: success
+            code: 0
+            data:
+              token: 8zEesdfsdfhWR3gQqfFs1
+              openid: '8zEessdf235234234'
+
+
+    ShareParam:
+      description: 微信分享参数
+      allOf:
+        - $ref: '#/components/schemas/Response'
+        - type: object
+          required:
+            - data
+          properties:
+            data:
+              type: object 
+              properties:
+                appId:
+                  type: string
+                nonceStr:
+                  type: string
+                timestamp:
+                  type: integer
+                url:
+                  type: string
+                signature:
+                  type: string
+
+          example:
+            msg: success
+            code: 0
+            data:
+              appId: APPID参数
+              nonceStr: qweqwerqqer
+              timestamp: 13423423
+              url: http://sdfsdfsdf
+              signature: 36234hsfgsdfsdf
+  
