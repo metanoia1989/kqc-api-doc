@@ -31,13 +31,15 @@ servers:
     description: 本地服务器
 
 security:
-  - ApiKeyAuth: []
+  - BearerAuth: []
     
 tags:
   - name: Auth
     description: 安全验证
   - name: Wechat
     description: 微信相关
+  - name: Event
+    description: 活动相关
     
 paths:
   /api/wechat/login:
@@ -95,10 +97,9 @@ paths:
     
 components:
   securitySchemes:
-    ApiKeyAuth:
-      type: apiKey
-      in: query
-      name: token
+    bearerAuth:            # arbitrary name for the security scheme
+      type: http
+      scheme: bearer
 
   schemas:
     Response:
@@ -181,4 +182,92 @@ components:
               timestamp: 13423423
               url: http://sdfsdfsdf
               signature: 36234hsfgsdfsdf
-  
+    Event:
+      description: 活动详情数据
+      allOf:
+        - $ref: '#/components/schemas/Response'
+        - type: object
+          required:
+            - data
+          properties:
+            data:
+              type: object 
+              properties:
+                id:
+                  type: integer
+                add_time:
+                  type: string
+                start_time:
+                  type: integer
+                  description: 开始时间为0时，只要不超过结束时间，活动都在进行中
+                end_time:
+                  type: integer
+                  description: 活动结束时间，为0表示永不结束
+                is_del:
+                  type: integer
+                status:
+                  type: integer
+                  description: 0：正常 -1：暂停
+                single_max_per_day:
+                  type: integer
+                  description: 每人每天最多可投票数
+                need_login:
+                  type: integer
+                  description: 是否需要授权登陆 0：不需要，在微信端只要静默登陆 1：需要，在微信端要授权
+                type:
+                  type: string
+                  description: 投票类型
+                title:
+                  type: string
+                cover_url:
+                  type: string
+                subtitle:
+                  type: string
+
+          example:
+            msg: success
+            code: 0
+            data:
+              id: 1
+              add_time: '2021-05-13 11:04:52'
+              start_time: 0
+              end_time: 0
+              is_del: 0
+              status: 0
+              single_max_per_day: 5
+              need_login: 0
+              type: 未知类型投票
+              title: 2021摄影大赛投票
+              cover_url: http://vote.kongquechao.com/cam01.jpg
+              subtitle: 2021省协摄影大赛投票
+
+    Player:
+      description: 选手详情数据
+      type: object
+      properties:
+        studio_id: 
+          type: integer
+        studio_name: 
+          type: string
+      example:
+        id: 1
+        type: 1
+        title: 周录军
+        cover_url:
+        subtitle: 儿童摄影类
+        event_id: 1
+
+    PlayersResponse:
+      description: 选手列表
+      allOf:
+        - $ref: '#/components/schemas/Response'
+        - type: object
+          required:
+            - data
+          properties:
+            data:
+              type: array
+              items:
+                $ref: '#/components/schemas/Player'
+
+      
