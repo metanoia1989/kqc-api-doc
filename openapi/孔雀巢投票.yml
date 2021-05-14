@@ -133,6 +133,18 @@ paths:
                 event_id:
                   type: integer
                   description: 活动ID
+                page:
+                  type: integer
+                  description: 第几页
+                limit:
+                  type: integer
+                  description: 每页的个数
+                title:
+                  type: string
+                  description: 作品或选手名称 
+                subtitle:
+                  type: string
+                  description: 副标题
               required:
                 - event_id
       responses:
@@ -293,10 +305,25 @@ components:
       description: 选手详情数据
       type: object
       properties:
-        studio_id: 
+        id: 
           type: integer
-        studio_name: 
+          description: 选手ID
+        type: 
           type: string
+        cover_url:
+          type: string
+        subtitle:
+          type: string
+        event_id: 
+          type: integer
+          description: 活动ID
+        serial_num: 
+          type: integer
+          description: 编号
+        vote_num: 
+          type: integer
+          description: 票数
+          
       example:
         id: 1
         type: 1
@@ -304,6 +331,8 @@ components:
         cover_url:
         subtitle: 儿童摄影类
         event_id: 1
+        serial_num: 1
+        vote_num: 4682
 
     PlayersResponse:
       description: 选手列表
