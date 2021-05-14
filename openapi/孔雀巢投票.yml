@@ -235,12 +235,15 @@ paths:
             schema:
               type: object
               properties:
-                ticket:
+                ct:
                   type: string
                   description: 投票票据
                 iv:
                   type: string
                   description: 初始化向量
+                s:
+                  type: string
+                  description: xxxxx
               required:
                 - ticket
                   iv
@@ -484,17 +487,20 @@ components:
             data:
               type: object 
               properties:
-                ticket:
+                ct:
                   type: string
                   description: 投票凭据，请利用iv和tag进行aes-128-gcm解密，然后MD5加密
                 iv:
                   type: string
                   description: 初始化向量
+                s:
+                  type: string
 
           example:
             msg: success
             code: 0
             data:
-              ticket: egzvXqnMZtw=
-              iv: 2d5980e0379df29788bfe601
+              ct: jJV6brhHTM5ibjEuU9YbmQ==
+              iv: e87576d1fe93cbb18dc0c82376da6beb
+              s: "699ea60896253642"
       
