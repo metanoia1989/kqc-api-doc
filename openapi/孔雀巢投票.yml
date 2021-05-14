@@ -3,7 +3,11 @@ info:
   title: 孔雀巢投票
   description: |
     # 简述
-    给孔雀巢商家后台使用，线上服务器地址 <http://vote.kongquechao.com>
+    给孔雀巢商家后台使用，线上服务器地址 <http://vote.kongquechao.com>    
+
+
+    访问 <https://vote.kongquechao.com/test/index.html> 获取登陆token  
+
 
     # 验证授权
     这些API使用以下的授权验证方式
@@ -40,6 +44,8 @@ tags:
     description: 微信相关
   - name: Event
     description: 活动相关
+  - name: Vote
+    description: 投票相关
     
 paths:
   /api/wechat/login:
@@ -150,7 +156,108 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/PlayersResponse'
+
+  /api/vote/up:
+    post:
+      tags:
+        - Vote
+      summary: 进行投票操作 
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                event_id:
+                  type: integer
+                  description: 活动ID
+                voting_object_id:
+                  type: integer
+                  description: 作品或选手ID
+                ticket:
+                  type: string
+                  description: 投票票据
+              required:
+                - event_id
+                  voting_object_id 
+                  ticket
+      responses:
+        '200':
+          description: 投票成功响应
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ObjectResponse'
+
+  /api/vote/ticket:
+    get:
+      tags:
+        - Vote
+      summary: 获取投票票据
+      description: 投票凭据有效期为10分钟，每次投票必须携带此凭据，请解密后进行md5
+      parameters:
+        - in: query
+          name: voting_object_id
+          schema:
+            type: integer
+          required: true
+          description: 作品或选手ID
+      responses:
+        '200':
+          description: 成功获取票据
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Ticket'
     
+  /api/vote/decrypt:
+    post:
+      tags:
+        - Vote
+      summary: 投票凭据解密测试
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                ticket:
+                  type: string
+                  description: 投票票据
+                iv:
+                  type: string
+                  description: 初始化向量
+                tag:
+                  type: string
+                  description: 使用AEAD密码模式（GCM或CCM）时通过引用传递的身份验证标签。
+              required:
+                - ticket
+                  iv
+                  tag
+      responses:
+        '200':
+          description: 投票成功响应
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/Response'
+                  - type: object
+                    required:
+                      - data
+                    properties:
+                      data:
+                        type: string
+                        description: 票据加密前的字符串
+              example:
+                msg: success
+                code: 0
+                data: Z3Zknyot
+
+
+
 components:
   securitySchemes:
     BearerAuth:            # arbitrary name for the security scheme
@@ -343,4 +450,31 @@ components:
               items:
                 $ref: '#/components/schemas/Player'
 
+    Ticket:
+      description: 投票凭据有效期为10分钟
+      allOf:
+        - $ref: '#/components/schemas/Response'
+        - type: object
+          required:
+            - data
+          properties:
+            data:
+              type: object 
+              properties:
+                ticket:
+                  type: string
+                  description: 投票凭据，请利用iv和tag进行aes-128-gcm解密，然后MD5加密
+                iv:
+                  type: string
+                  description: 初始化向量
+                tag:
+                  type: string
+
+          example:
+            msg: success
+            code: 0
+            data:
+              ticket: egzvXqnMZtw=
+              iv: 2d5980e0379df29788bfe601
+              tag: db539d65a61868d7f85c070a63ac8c6a
       
