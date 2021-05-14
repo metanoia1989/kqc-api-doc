@@ -93,11 +93,59 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ShareParam'
-   
+
+  /api/even/{event_id}:
+    get:
+      tags:
+        - Event
+      summary: 获取活动详情
+      security: 
+        - BearerAuth: []
+      parameters:
+        - in: path
+          name: event_id
+          schema:
+            type: integer
+          required: true
+          description: 活动ID
+      responses:
+        '200':
+          description: 活动详情数据
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Event'
+
+  /api/competitors:
+    get:
+      tags:
+        - Event
+      summary: 活动作品或选手列表
+      security: 
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                event_id:
+                  type: integer
+                  description: 活动ID
+              required:
+                - event_id
+      responses:
+        '200':
+          description: 活动作品或选手列表数据
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PlayersResponse'
     
 components:
   securitySchemes:
-    bearerAuth:            # arbitrary name for the security scheme
+    BearerAuth:            # arbitrary name for the security scheme
       type: http
       scheme: bearer
 
