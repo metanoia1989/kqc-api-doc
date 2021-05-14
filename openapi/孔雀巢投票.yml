@@ -449,19 +449,28 @@ components:
         serial_num: 
           type: integer
           description: 编号
+        cover_width: 
+          type: integer
+          description: 封面宽度
+        cover_height: 
+          type: integer
+          description: 封面高度
         vote_num: 
           type: integer
           description: 票数
           
       example:
-        id: 1
+        id: 396
         type: 1
         title: 周录军
-        cover_url:
+        cover_url: http://cqc-vote.test/static/img/event_11/cover/2222.jpg
         subtitle: 儿童摄影类
         event_id: 1
-        serial_num: 1
-        vote_num: 4682
+        source_submit_id: 217
+        phone: '18698712576'
+        cover_width: 500
+        cover_height: 333
+        vote_num: 1596
 
     PlayersResponse:
       description: 选手列表
