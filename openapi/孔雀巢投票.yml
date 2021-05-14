@@ -125,30 +125,42 @@ paths:
       tags:
         - Event
       summary: 活动作品或选手列表
-      requestBody:
-        required: true
-        content:
-          application/x-www-form-urlencoded:
-            schema:
-              type: object
-              properties:
-                event_id:
-                  type: integer
-                  description: 活动ID
-                page:
-                  type: integer
-                  description: 第几页
-                limit:
-                  type: integer
-                  description: 每页的个数
-                title:
-                  type: string
-                  description: 作品或选手名称 
-                subtitle:
-                  type: string
-                  description: 副标题
-              required:
-                - event_id
+      parameters:
+        - in: query
+          name: event_id
+          schema:
+            type: integer
+            description: 活动ID
+          required: true
+              
+        - in: query
+          name: page
+          schema:
+            type: integer
+            description: 第几页
+        - in: query
+          name: limit
+          schema:
+            type: integer
+            description: 每页的个数
+        - in: query
+          name: title
+          schema:
+            type: string
+            description: 作品或选手名称 
+        - in: query
+          name: subtitle
+          schema:
+            type: string
+            description: 副标题
+        - in: query
+          name: id
+          schema:
+            type: integer
+            description: 作品或选手ID
+        
+          
+
       responses:
         '200':
           description: 活动作品或选手列表数据
@@ -229,13 +241,9 @@ paths:
                 iv:
                   type: string
                   description: 初始化向量
-                tag:
-                  type: string
-                  description: 使用AEAD密码模式（GCM或CCM）时通过引用传递的身份验证标签。
               required:
                 - ticket
                   iv
-                  tag
       responses:
         '200':
           description: 投票成功响应
@@ -386,6 +394,9 @@ components:
                   type: string
                 subtitle:
                   type: string
+                remaining_time:
+                  description: 活动投票剩余时间
+                  type: integer
 
           example:
             msg: success
@@ -403,6 +414,7 @@ components:
               title: 2021摄影大赛投票
               cover_url: http://vote.kongquechao.com/cam01.jpg
               subtitle: 2021省协摄影大赛投票
+              remaining_time: 4090510
 
     Player:
       description: 选手详情数据
@@ -413,6 +425,7 @@ components:
           description: 选手ID
         type: 
           type: string
+          description: 类型 1： 作品 2：人或其它 
         cover_url:
           type: string
         subtitle:
@@ -467,8 +480,6 @@ components:
                 iv:
                   type: string
                   description: 初始化向量
-                tag:
-                  type: string
 
           example:
             msg: success
@@ -476,5 +487,4 @@ components:
             data:
               ticket: egzvXqnMZtw=
               iv: 2d5980e0379df29788bfe601
-              tag: db539d65a61868d7f85c070a63ac8c6a
       
