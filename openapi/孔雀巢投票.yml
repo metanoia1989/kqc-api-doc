@@ -94,13 +94,11 @@ paths:
               schema:
                 $ref: '#/components/schemas/ShareParam'
 
-  /api/even/{event_id}:
+  /api/event/{event_id}:
     get:
       tags:
         - Event
       summary: 获取活动详情
-      security: 
-        - BearerAuth: []
       parameters:
         - in: path
           name: event_id
@@ -121,8 +119,6 @@ paths:
       tags:
         - Event
       summary: 活动作品或选手列表
-      security: 
-        - BearerAuth: []
       requestBody:
         required: true
         content:
