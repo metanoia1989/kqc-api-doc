@@ -54,18 +54,13 @@ paths:
         - Wechat
       summary: 微信静默登陆 
       security: []
-      requestBody:
-        required: true
-        content:
-          application/x-www-form-urlencoded:
-            schema:
-              type: object
-              properties:
-                code:
-                  type: string
-                  description: 微信授权登陆code
-              required:
-                - code
+      parameters:
+        - in: query
+          name: code
+          schema:
+            type: string
+          required: true
+          description: 微信授权登陆code
       responses:
         '200':
           description: 静默登陆成功
@@ -91,7 +86,7 @@ paths:
                   type: string
                   description: 分享的URL
               required:
-                - code
+                - url
       responses:
         '200':
           description: 微信分享参数
