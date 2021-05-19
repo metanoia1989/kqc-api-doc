@@ -222,7 +222,70 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Ticket'
-    
+  /api/vote/rankingList:
+    get:
+      tags:
+        - Vote
+      summary: 票数排行列表
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                event_id:
+                  type: integer
+                  description: 活动ID
+                page:
+                  type: integer
+                  description: 当前页数
+                number:
+                  type: integer
+                  description: 每页显示多少行
+              required:
+                - event_id
+                  page
+                  number
+      responses:
+        '200':
+          description: 获取列表成功响应
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/rankingList'
+
+  /api/event/workDetails:
+    get:
+      tags:
+        - Event
+      summary: 活动作品详情
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                event_id:
+                  type: integer
+                  description: 活动ID
+                id:
+                  type: integer
+                  description: 作品ID
+              required:
+                - event_id
+                  id
+      responses:
+        '200':
+          description: 获取作品详情成功响应
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/workDetails'
+
   /api/vote/decrypt:
     post:
       tags:
@@ -512,4 +575,88 @@ components:
               ct: jJV6brhHTM5ibjEuU9YbmQ==
               iv: e87576d1fe93cbb18dc0c82376da6beb
               s: "699ea60896253642"
-      
+
+    rankingList:
+      description: 投票排行
+      allOf:
+        - $ref: '#/components/schemas/Response'
+        - type: object
+          required:
+            - data
+          properties:
+            data:
+              type: object
+              properties:
+                currentCount:
+                  type: integer
+                  description: 当前页面数据条数
+                datacount:
+                  type: integer
+                  description: 总数据条数
+                list:
+                  type: array
+
+          example:
+            msg: success
+            code: 0
+            data:
+              list:
+                0:
+                  id: 369
+                  title: "周录军"
+                  votesnumber: 12
+                1:
+                  id: 398
+                  title: "刘家豪"
+                  votesnumber: 7
+
+    workDetails:
+      description: 作品详情
+      allOf:
+        - $ref: '#/components/schemas/Response'
+        - type: object
+          required:
+            - data
+          properties:
+            data:
+              type: object
+              properties:
+                datacount:
+                  type: integer
+                  description: 作品张数
+                list:
+                  type: array
+                  description: 作品图片、id
+                ranking:
+                  type: integer
+                  description: 当前排名
+                voteNumber:
+                  type: integer
+                  description: 票数
+                voting_object_id:
+                  type: integer
+                  description: 作品ID
+                workInfo:
+                  type: object
+                  description: 作品详情
+
+          example:
+            msg: success
+            code: 0
+            data:
+              datacount: 8
+              list:
+                0:
+                  preview_url: "http://s.event.kongquechao.com/compress/w2ldo37F4702A3-E842-4444-926A-E9764A3F2361.jpeg"
+                  voting_object_id: 397
+                1:
+                  preview_url: "http://s.event.kongquechao.com/compress/feeg86DCF7FC21-5DF8-461C-A32C-E6D2B2359BF4.jpeg"
+                  voting_object_id: 397
+              ranking: 2
+              voteNumber: 10
+              voting_object_id: 297
+              workInfo:
+                cover_url: "https://vote.kongquechao.com/static/toupiaos.jpg"
+                id: 397
+                subtitle: "影视婚纱类"
+                title: "宋志会"
