@@ -149,10 +149,10 @@ paths:
             type: string
             description: 副标题
         - in: query
-          name: id
+          name: source_submit_id
           schema:
             type: integer
-            description: 作品或选手ID
+            description: 编号搜索
         
           
 
