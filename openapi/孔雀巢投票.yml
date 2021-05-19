@@ -441,15 +441,18 @@ components:
         event_id: 
           type: integer
           description: 活动ID
-        serial_num: 
+        source_submit_id: 
           type: integer
-          description: 编号
+          description: 选手编号
         cover_width: 
           type: integer
           description: 封面宽度
         cover_height: 
           type: integer
           description: 封面高度
+        organization:
+          type: string
+          description: 机构名称
         vote_num: 
           type: integer
           description: 票数
@@ -465,6 +468,7 @@ components:
         phone: '18698712576'
         cover_width: 500
         cover_height: 333
+        organization: 柒城影像婚纱摄影
         vote_num: 1596
 
     PlayersResponse:
