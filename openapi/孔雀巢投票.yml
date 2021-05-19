@@ -54,18 +54,13 @@ paths:
         - Wechat
       summary: 微信静默登陆 
       security: []
-      requestBody:
-        required: true
-        content:
-          application/x-www-form-urlencoded:
-            schema:
-              type: object
-              properties:
-                code:
-                  type: string
-                  description: 微信授权登陆code
-              required:
-                - code
+      parameters:
+        - in: query
+          name: code
+          schema:
+            type: string
+          required: true
+          description: 微信授权登陆code
       responses:
         '200':
           description: 静默登陆成功
@@ -91,7 +86,7 @@ paths:
                   type: string
                   description: 分享的URL
               required:
-                - code
+                - url
       responses:
         '200':
           description: 微信分享参数
@@ -509,15 +504,18 @@ components:
         event_id: 
           type: integer
           description: 活动ID
-        serial_num: 
+        source_submit_id: 
           type: integer
-          description: 编号
+          description: 选手编号
         cover_width: 
           type: integer
           description: 封面宽度
         cover_height: 
           type: integer
           description: 封面高度
+        organization:
+          type: string
+          description: 机构名称
         vote_num: 
           type: integer
           description: 票数
@@ -533,6 +531,7 @@ components:
         phone: '18698712576'
         cover_width: 500
         cover_height: 333
+        organization: 柒城影像婚纱摄影
         vote_num: 1596
 
     PlayersResponse:
