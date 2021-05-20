@@ -217,7 +217,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Ticket'
-  /api/vote/rankingList:
+  /api/rankingList:
     get:
       tags:
         - Vote
