@@ -280,7 +280,37 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/workDetails'
-
+  /api/event/ErrorRecord:
+    post:
+      tags:
+        - Event
+      summary: 报错记录
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                event:
+                  type: integer
+                  description: 活动id
+                source_api:
+                  type: string
+                  description: 报错的接口
+                content:
+                  type: string
+                  description: 报错内容
+              required:
+                - ticket
+                  iv
+      responses:
+        '200':
+          description: 成功获取票据
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorRecord'
   /api/vote/decrypt:
     post:
       tags:
@@ -659,3 +689,29 @@ components:
                 id: 397
                 subtitle: "影视婚纱类"
                 title: "宋志会"
+
+    ErrorRecord:
+      description: 投票排行
+      allOf:
+        - $ref: '#/components/schemas/Response'
+        - type: object
+          required:
+            - data
+          properties:
+            data:
+              type: object
+              properties:
+                code:
+                  type: integer
+                  description: code码
+                msg:
+                  type: string
+                  description: 状态
+                data:
+                  type: string
+                  description: 数据
+
+          example:
+            msg: success
+            code: 0
+            data: "添加成功"
