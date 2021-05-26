@@ -40,6 +40,8 @@ tags:
     description: 旗下店铺
   - name: Util
     description: 工具相关
+  - name: Works
+    description: 作品相关
     
 paths:
   /studio/login:
@@ -252,7 +254,36 @@ paths:
                 '440105': 海珠区
                 '440106': 天河区
    
-    
+  /studio/Works/generalize_add:
+    get:
+      tags:
+        - Works
+      summary: 获取推广员的作品拍摄地
+      parameters:
+        - name: generalize
+          in: query
+          description: 商家id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: 作品地区列表
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/generalize_add'
+              example:
+                msg: success
+                code: 0
+                data:
+                  0:
+                    st_gp_cid: 208
+                    city: "大理"
+                  1:
+                    st_gp_cid: 276
+                    city: "丽江市"
+
 components:
   securitySchemes:
     ApiKeyAuth:
@@ -404,3 +435,28 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/Shop'
+
+    generalize_add:
+      description: 投票排行
+      allOf:
+        - $ref: '#/components/schemas/Response'
+        - type: object
+          required:
+            - data
+          properties:
+            data:
+              type: object
+              properties:
+                code:
+                  type: integer
+                  description: code码
+                msg:
+                  type: string
+                  description: 状态
+                data:
+                  type: string
+                  description: 数据
+          example:
+            msg: success
+            code: 0
+            data: "添加成功"
