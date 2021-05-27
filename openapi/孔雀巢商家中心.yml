@@ -284,6 +284,336 @@ paths:
                     st_gp_cid: 276
                     city: "丽江市"
 
+  /studio/generalize/homeMoneyStats:
+    get:
+      description: 推广员首页数据统计
+      tags:
+        - Shop
+      responses:
+        '200':
+          description: 喜帖总收礼额、云相册总重置额
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/Response'
+                  - type: object
+                    required:
+                      - data
+                    properties:
+                      data:
+                        type: object
+                        properties:
+                          code:
+                            type: integer
+                            description: code码
+                          msg:
+                            type: string
+                            description: 状态
+                          data:
+                            type: object
+                            properties:
+                              cloud_pay_total:
+                                type: number
+                                description: 云相册总充值额
+                              invitation_gift_total:
+                                type: number
+                                description: 喜帖总收礼额
+              example:
+                msg: success
+                code: 0
+                data:
+                  cloud_pay_total: 4157.8
+                  invitation_gift_total: 206339.53
+
+  /studio/generalize/invtTotal:
+    get:
+      description: 店铺的喜帖交易总额
+      tags:
+        - Shop
+      parameters:
+        - name: sid
+          in: query
+          description: 商家id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: 店铺的喜帖交易总额查询
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/Response'
+                  - type: object
+                    required:
+                      - data
+                    properties:
+                      data:
+                        type: object
+                        properties:
+                          code:
+                            type: integer
+                            description: code码
+                          msg:
+                            type: string
+                            description: 状态
+                          data:
+                            type: object
+                            properties:
+                              total:
+                                type: number
+              example:
+                msg: success
+                code: 0
+                data:
+                  total: 875.18
+
+  /studio/generalize/invtQrcode:
+    get:
+      description: 查看喜帖商家二维码
+      tags:
+        - Shop
+      parameters:
+        - name: sid
+          in: query
+          description: 商家id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: 商家二维码链接
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response'
+              example:
+                msg: success
+                code: 0
+                data: "http://cdn.kongquechao.com/public/qrcode/code375_1594618633.png"
+
+  /studio/generalize/invtStats:
+    get:
+      description: 喜帖数据统计
+      tags:
+        - Shop
+      parameters:
+        - name: sid
+          in: query
+          description: 商家id
+          required: true
+          schema:
+            type: integer
+        - name: type
+          in: query
+          description: 时间类型
+          schema:
+            type: string
+            enum: [today, yesterday, pastWeek, pastMonth]
+        - name: start_time
+          in: query
+          description: 开始日期
+          schema:
+            type: string
+            description: 没有type时，设置开启结束日期会覆盖 例如 2019-05-21
+        - name: end_time
+          in: query
+          description: 结束日期
+          schema:
+            type: string
+            description: 例如 2019-06-21
+      responses:
+        '200':
+          description: 喜帖统计数据
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InvtStats'
+
+  /studio/generalize/cloudFinancialStats:
+    get:
+      description: 云存储充值金额及返佣统计，可扩容容量
+      tags:
+        - Shop
+      parameters:
+        - name: sid
+          in: query
+          description: 商家id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: 云存储充值金额及返佣统计，可扩容容量
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/Response'
+                  - type: object
+                    required:
+                      - data
+                    properties:
+                      data:
+                        type: object
+                        properties:
+                          code:
+                            type: integer
+                            description: code码
+                          msg:
+                            type: string
+                            description: 状态
+                          data:
+                            type: object
+                            properties:
+                              consumeTotal:
+                                type: number
+                                description: 充值金额
+                              rebateTotal:
+                                type: number
+                                description: 返佣
+                              freeDilatationTotal:
+                                type: number
+                                description: 免费扩容空间
+              example:
+                msg: success
+                code: 0
+                data:
+                  consumeTotal: 4157.8
+                  rebateTotal: 415.78000000000003
+                  freeDilatationTotal: 0
+
+  /studio/generalize/cloudSpaceUseages:
+    get:
+      description: 商家云存储空间使用情况、是否开通 
+      tags:
+        - Shop
+      parameters:
+        - name: sid
+          in: query
+          description: 商家id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: 云存储使用情况
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/Response'
+                  - type: object
+                    required:
+                      - data
+                    properties:
+                      data:
+                        type: object
+                        properties:
+                          code:
+                            type: integer
+                            description: code码
+                          msg:
+                            type: string
+                            description: 状态
+                          data:
+                            type: object
+                            properties:
+                              total_space:
+                                type: number
+                                description: 总空间
+                              used_space:
+                                type: number
+                                description: 已用空间
+                              end_time:
+                                type: string
+                                description: 过期时间
+              example:
+                msg: success
+                code: 0
+                data:
+                  consumeTotal: 4157.8
+                  rebateTotal: 415.78000000000003
+                  freeDilatationTotal: 0
+        '201':
+          description: 是否开通云存储
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response'
+              example:
+                msg: 此商家未开通云存储
+                code: 2
+  /studio/generalize/cloudFreeDilatation:
+    post:
+      tags:
+        - Shop
+      summary: 商家免费扩容
+      description: 推广员给商家免费扩容
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                sid:
+                  type: integer
+                  description: 商家店铺ID
+                capacity:
+                  type: integer
+                  description: 扩容大小 G
+              required:
+                - sid
+                  capacity
+      responses:
+        '200':
+          description: 商家登陆成功的响应
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response'
+
+  /studio/generalize/cloudDataStats:
+    get:
+      description: 云存储数据统计，每天的空间使用以及新增文件数量
+      tags:
+        - Shop
+      parameters:
+        - name: sid
+          in: query
+          description: 商家id
+          required: true
+          schema:
+            type: integer
+        - name: type
+          in: query
+          description: 时间类型
+          schema:
+            type: string
+            enum: [today, yesterday, pastWeek, pastMonth]
+        - name: start_time
+          in: query
+          description: 开始日期
+          schema:
+            type: string
+            description: 没有type时，设置开启结束日期会覆盖 例如 2019-05-21
+        - name: end_time
+          in: query
+          description: 结束日期
+          schema:
+            type: string
+            description: 例如 2019-06-21
+      responses:
+        '200':
+          description: 云存储数据统计，每天的空间使用以及新增文件数量
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CloudStats'
+                    
 components:
   securitySchemes:
     ApiKeyAuth:
@@ -460,3 +790,81 @@ components:
             msg: success
             code: 0
             data: "添加成功"
+
+    InvtStats:
+      description: 喜帖统计数据
+      allOf:
+        - $ref: '#/components/schemas/Response'
+        - type: object
+          required:
+            - data
+          properties:
+            data:
+              type: object
+              properties:
+                between_time: 
+                  type: array   
+                  description: 例如2021-05-20 2021-05-26
+                stats:  
+                  type: object
+      example:
+        msg: success
+        code: 0
+        data:
+          between_time:
+          - '2021-05-20'
+          - '2021-05-26'
+          tpl_nums:
+            '2021-05-20': 0
+            '2021-05-21': 0
+            '2021-05-22': 0
+            '2021-05-23': 0
+            '2021-05-24': 0
+            '2021-05-25': 0
+            '2021-05-26': 0
+          tpl_views:
+            '2021-05-20': 0
+            '2021-05-21': 0
+            '2021-05-22': 0
+            '2021-05-23': 0
+            '2021-05-24': 0
+            '2021-05-25': 0
+            '2021-05-26': 0
+          cash_invt:
+            price: 0
+            percent: 0%
+          cash_gift:
+            price: 0
+            percent: 0%
+          tpl_total:
+            price: 0
+            percent: 0%
+
+    CloudStats:
+      description: 云存储统计数据
+      allOf:
+        - $ref: '#/components/schemas/Response'
+        - type: object
+          required:
+            - data
+          properties:
+            data:
+              type: object
+              properties:
+                between_time: 
+                  type: array   
+                  description: 例如2021-05-20 2021-05-26
+                stats:  
+                  type: object
+      example:
+        msg: success
+        code: 0
+        data:
+          between_time:
+          - '2021-05-27'
+          - '2021-05-27'
+          stats:
+            '2021-05-27':
+              num: 0
+              size: 0
+              f_time: '2021-05-27'
