@@ -1,0 +1,211 @@
+openapi: '3.0.2'
+info:
+  title: 孔雀巢云存储
+  description: |
+    # 简述
+    给孔雀巢商家后台的云存储使用，线上服务器地址 <https://cloud.kongquechao.com>
+
+    # 验证授权
+    这些API使用以下的授权验证方式
+      - Bearer Token
+      
+    <SecurityDefinitions />
+
+  termsOfService: https://smartbear.com/terms-of-use/
+  contact:
+    name: Adam Smith
+    url: https://github.com/metanoia1989
+    email: m15171641694@163.com
+  x-logo:
+    url: './assets/images/logo-brand.png'
+    altText: 孔雀巢云存储
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.0
+
+servers:
+  - url: https://cloud.kongquechao.com
+    description: 线上服务器
+  - url: http://cqc-cloud.test
+    description: 本地服务器
+
+security:
+  - BearerAuth: []
+    
+tags:
+  - name: Folder
+    description: 相册相关
+
+paths:
+  /api/folder/folder_list:
+    post:
+      tags:
+        - Folder
+      summary: 相册列表
+      parameters:
+        - name: page
+          description: 第几页
+          in: query
+          schema:
+            type: integer
+            format: int64
+            nullable: true
+        - name: limit
+          description: 每页几条
+          in: query
+          schema:
+            type: integer
+            format: int64
+            nullable: true
+        - name: folder_name
+          description: 文件夹名称
+          in: query
+          schema:
+            type: integer
+            format: int64
+            nullable: true
+        - name: expire_type
+          description: 过期类型筛选
+          in: query
+          schema:
+            type: string
+            enum:
+              - all
+                not_expired 
+                will_expired 
+                have_expired
+      responses:
+        '200':
+          description: 登陆成功的信息
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FolderList'
+
+                
+                
+components:
+  securitySchemes:
+    BearerAuth:            
+      type: http
+      scheme: bearer
+
+
+  schemas:
+    Response:
+      description: 接口响应公共字段
+      type: object
+      properties:
+        code:
+          type: integer 
+        msg:
+          type: string
+        data: {}
+      required:
+        - code
+        - msg
+
+    ObjectResponse:
+      description: 任意对象数据的响应
+      allOf:
+        - $ref: '#/components/schemas/Response'
+        - type: object
+          required:
+            - data
+          properties:
+            data:
+              type: object
+      
+
+
+    Folder:
+      description: 单个文件夹信息
+      type: object
+      properties:
+        id: 
+          type: integer
+        pid: 
+          type: integer
+        folder_name: 
+          type: string
+        create_time: 
+          type: integer
+        customer_name: 
+          type: string
+        customer_phone: 
+          type: string
+        expire_time: 
+          type: integer
+        file_num: 
+          type: integer
+        file_size: 
+          type: integer
+        thumb_size: 
+          type: integer
+        preview_size: 
+          type: integer
+        yp_num: 
+          type: integer
+        jx_num: 
+          type: integer
+        sj_num: 
+          type: integer
+        folder_size: 
+          type: integer
+        photo_invalid: 
+          type: integer
+      example:
+        id: 1134
+        pid: 0
+        folder_name: 韩昭文
+        create_time: 1615516659
+        customer_name: 韩昭文
+        customer_phone: '13823812689'
+        expire_time: 1619712000
+        file_num: 14
+        file_size: '56232745'
+        thumb_size: '94424'
+        preview_size: '850680'
+        yp_num: 11
+        jx_num: 3
+        sj_num: 0
+        folder_size: 57177849
+        photo_invalid: 1
+
+    FolderList:
+      description: 相册列表数据
+      allOf:
+        - $ref: '#/components/schemas/Response'
+        - type: object
+          required:
+            - data
+          properties:
+            data:
+              type: object
+              properties:
+                list:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/Folder'
+      example:
+        code: 0
+        msg: success
+        data:
+          list:
+          - id: 1134
+            pid: 0
+            folder_name: 韩昭文
+            create_time: 1615516659
+            customer_name: 韩昭文
+            customer_phone: '13823812689'
+            expire_time: 1619712000
+            file_num: 14
+            file_size: '56232745'
+            thumb_size: '94424'
+            preview_size: '850680'
+            yp_num: 11
+            jx_num: 3
+            sj_num: 0
+            folder_size: 57177849
+            photo_invalid: 1
