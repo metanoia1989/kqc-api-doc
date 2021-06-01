@@ -82,8 +82,52 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/FolderList'
-
                 
+  /api/album/compress_folder:
+    post:
+      tags:
+        - Folder
+      summary: 相册压缩
+      requestBody:
+        required: true 
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                folder_id:
+                  type: integer
+                  description: 相册ID
+                subfolder_id:
+                  type: integer
+                  description: 子相册ID
+              required:
+                - folder_id
+      responses:
+        '200':
+          description: 压缩后七牛云的文件状态ID
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/Response'
+                  - type: object
+                    required:
+                      - data
+                    properties:
+                      data:
+                        type: object
+                        properties:
+                          status_id:
+                            type: string
+                            description: 七牛云文件状态ID
+                example:
+                  code: 0
+                  msg: success
+                  data:
+                    status_id: z2.01z201cbrwd343tatr00mur3pz0002kj
+
+
                 
 components:
   securitySchemes:
@@ -145,6 +189,9 @@ components:
           type: integer
         preview_size: 
           type: integer
+        send_status: 
+          type: integer
+          description: 是否发送了邮件
         yp_num: 
           type: integer
         jx_num: 
@@ -167,6 +214,7 @@ components:
         file_size: '56232745'
         thumb_size: '94424'
         preview_size: '850680'
+        send_status: 1
         yp_num: 11
         jx_num: 3
         sj_num: 0
@@ -204,6 +252,7 @@ components:
             file_size: '56232745'
             thumb_size: '94424'
             preview_size: '850680'
+            send_status: 1
             yp_num: 11
             jx_num: 3
             sj_num: 0
