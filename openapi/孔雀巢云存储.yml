@@ -257,6 +257,7 @@ components:
             create_time: 1615516659
             customer_name: 韩昭文
             customer_phone: '13823812689'
+            vip: free
             expire_time: 1619712000
             file_num: 14
             file_size: '56232745'

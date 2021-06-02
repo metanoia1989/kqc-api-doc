@@ -534,9 +534,10 @@ paths:
                 msg: success
                 code: 0
                 data:
-                  consumeTotal: 4157.8
-                  rebateTotal: 415.78000000000003
-                  freeDilatationTotal: 0
+                  total_space: 107374182400
+                  used_space: 0
+                  end_time: '2021-06-30'
+
         '201':
           description: 是否开通云存储
           content:
@@ -546,6 +547,7 @@ paths:
               example:
                 msg: 此商家未开通云存储
                 code: 2
+
   /studio/generalize/cloudFreeDilatation:
     post:
       tags:
@@ -856,6 +858,11 @@ components:
                   description: 例如2021-05-20 2021-05-26
                 stats:  
                   type: object
+                size_total:  
+                  type: integer
+                num_total:  
+                  type: integer
+
       example:
         msg: success
         code: 0
@@ -868,3 +875,5 @@ components:
               num: 0
               size: 0
               f_time: '2021-05-27'
+          size_total: 0
+          num_total: 0
