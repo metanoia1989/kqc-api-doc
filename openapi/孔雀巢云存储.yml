@@ -179,6 +179,15 @@ components:
           type: string
         customer_phone: 
           type: string
+        vip: 
+          type: string
+          description: 是否开通会员
+          # free 未开通 month 月费 year 年费 forever 永久
+          enum:
+            - free  
+              month 
+              year 
+              forever 
         expire_time: 
           type: integer
         file_num: 
@@ -209,6 +218,7 @@ components:
         create_time: 1615516659
         customer_name: 韩昭文
         customer_phone: '13823812689'
+        vip: free
         expire_time: 1619712000
         file_num: 14
         file_size: '56232745'
