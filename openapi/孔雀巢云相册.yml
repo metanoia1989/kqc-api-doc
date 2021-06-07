@@ -3,7 +3,7 @@ info:
   title: 孔雀巢云存储
   description: |
     # 简述
-    给孔雀巢商家后台的云存储使用，线上服务器地址 <https://cloud.kongquechao.com>
+    给孔雀巢商家后台的云存储使用，线上服务器地址 <https://album.kongquechao.com>
 
     # 验证授权
     这些API使用以下的授权验证方式
