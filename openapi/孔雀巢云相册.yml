@@ -53,6 +53,21 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/SetMenuItemList'
+                
+  /api/vip/status:
+    get:
+      tags:
+        - VIP
+      summary: VIP状态
+      description: 获取指定相册的VIP开通状态
+      responses:
+        '200':
+          description: VIP状态响应
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VIPStatus'
+      
 
   /api/order/make:
     post:
@@ -180,11 +195,11 @@ paths:
                       file_name: IMG_6859-1.jpg
                       hash_code: lrxTmckTQ_RmfZkYOc2CKOqmhHZt
                       md5_code: d759601b9b10577637f66eb4ad135ed8
-                      thumb_img: https://album.kongquechao.com/uploads/thumb/20210222/a541a8c6ca3e0273929301d5f1450dcd.jpg
-                      preview_img: https://album.kongquechao.com/uploads/preview/20210222/a541a8c6ca3e0273929301d5f1450dcd.jpg
+                      thumb_img: https://album.kongquechao.com/uploads/thumb/20210222/a541a8cxxxxxx0273929301d5f1450dcd.jpg
+                      preview_img: https://album.kongquechao.com/uploads/preview/20210222/a541xxxxxa3e0273929301d5f1450dcd.jpg
                       create_time: 1613962863
                       group_id: 0
-                      key: d759601b9b10577637f66eb4ad135ed8.jpg
+                      key: d759601b9b10xxxxx7f66eb4ad135ed8.jpg
                       file_size: 23170168
                       is_horizontal: 0
                       thumb_size: 11683
@@ -204,7 +219,7 @@ paths:
                       preview_img: v3ob_hRIc4xY2mHx6EnvwDbF7ew=/lqRiDmSDhUJjJAOBWKvMzvT4EoOt
                       create_time: 1614736615
                       group_id: 0
-                      key: e787bc365014be7c9e87218e61a50f24.mp4
+                      key: e787bc3650xxxxxxxxxxe87218e61a50f24.mp4
                       file_size: 71092224
                       is_horizontal: 0
                       thumb_size: 14279
@@ -438,6 +453,10 @@ components:
           enum:
             - 1
               0
+        open_num: 
+          type: integer
+          description: 套餐开通人数
+
       example:
         id: 3
         name: 永久保存
@@ -448,6 +467,7 @@ components:
         duration: forever
         status: 1
         sort: 101
+        open_num: 2
 
     SetMenuItemList:
       description: 下单成功
@@ -489,7 +509,7 @@ components:
         code: 0
         msg: success
         data:
-          appId: wxb673dc0e4e444604
+          appId: wxb673xxxxxx4e444604
           timeStamp: '1623028456'
           nonceStr: UT59Kye8ObjaaufR
           package: prepay_id=wx070914169218999b9e22bcdd1144b20000
@@ -639,3 +659,45 @@ components:
                   type: array
                   items:
                     $ref: '#/components/schemas/Photo'
+
+    VIPStatus:
+      description: 获取VIP状态
+      allOf:
+        - $ref: '#/components/schemas/Response'
+        - type: object
+          required:
+            - data
+          properties:
+            data:
+              type: object
+              properties:
+                id: 
+                  type: integer
+                uid: 
+                  type: integer
+                customer_name: 
+                  type: string
+                customer_phone: 
+                  type: string
+                vip: 
+                  type: string
+                  enum: ['free', 'month', 'year', 'forever']
+                expire_time: 
+                  type: integer
+                is_del: 
+                  type: integer
+                  enum: [0, 1]
+                expire_date: 
+                  type: string
+      example:
+        code: 0
+        msg: success
+        data:
+          id: 1849
+          uid: 1491
+          customer_name: xxx
+          customer_phone: '13xxxxxxx52'
+          vip: forever
+          expire_time: 0
+          is_del: 0
+          expire_date: '1970-01-01'
