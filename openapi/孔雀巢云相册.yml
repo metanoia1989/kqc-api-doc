@@ -1,9 +1,9 @@
 openapi: '3.0.2'
 info:
-  title: 孔雀巢云存储
+  title: 孔雀巢云相册
   description: |
     # 简述
-    给孔雀巢商家后台的云存储使用，线上服务器地址 <https://album.kongquechao.com>
+    给孔雀巢商家后台的云相册使用，线上服务器地址 <https://album.kongquechao.com>
 
     # 验证授权
     这些API使用以下的授权验证方式
@@ -18,7 +18,7 @@ info:
     email: m15171641694@163.com
   x-logo:
     url: './assets/images/logo-brand.png'
-    altText: 孔雀巢云存储
+    altText: 孔雀巢云相册
   license:
     name: Apache 2.0
     url: https://www.apache.org/licenses/LICENSE-2.0.html
@@ -36,6 +36,8 @@ security:
 tags:
   - name: VIP
     description: VIP
+  - name: Folder
+    description: 相册
 
 paths:
   /api/vip/setmenus:
@@ -147,12 +149,210 @@ paths:
               schema:
                 $ref: '#/components/schemas/Payment'
 
-           
+  /api/banner/random:
+    get:
+      tags:
+        - Folder
+      summary: 随机轮播图
+      parameters:
+        - name: folder_id
+          in: query
+          description: 相册ID 
+          schema:
+            type: integer
+            format: int64
+          required: true
+      responses:
+        '200':
+          description: banner图
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Banners'
+              examples:
+                Banners1:
+                  value:
+                    code: 0
+                    msg: success
+                    data:
+                    - id: 46533
+                      file_type: 0
+                      file_name: IMG_6859-1.jpg
+                      hash_code: lrxTmckTQ_RmfZkYOc2CKOqmhHZt
+                      md5_code: d759601b9b10577637f66eb4ad135ed8
+                      thumb_img: https://album.kongquechao.com/uploads/thumb/20210222/a541a8c6ca3e0273929301d5f1450dcd.jpg
+                      preview_img: https://album.kongquechao.com/uploads/preview/20210222/a541a8c6ca3e0273929301d5f1450dcd.jpg
+                      create_time: 1613962863
+                      group_id: 0
+                      key: d759601b9b10577637f66eb4ad135ed8.jpg
+                      file_size: 23170168
+                      is_horizontal: 0
+                      thumb_size: 11683
+                      preview_size: 251781
+                      duration: 0
+                Banners2:
+                  value:
+                    code: 0
+                    msg: success
+                    data:
+                    - id: 50751
+                      file_type: 1
+                      file_name: 00006.m2ts.mp4
+                      hash_code: lqRiDmSDhUJjJAOBWKvMzvT4EoOt
+                      md5_code: e787bc365014be7c9e87218e61a50f24
+                      thumb_img: vframe_e787bc365014be7c9e87218e61a50f24.jpg
+                      preview_img: v3ob_hRIc4xY2mHx6EnvwDbF7ew=/lqRiDmSDhUJjJAOBWKvMzvT4EoOt
+                      create_time: 1614736615
+                      group_id: 0
+                      key: e787bc365014be7c9e87218e61a50f24.mp4
+                      file_size: 71092224
+                      is_horizontal: 0
+                      thumb_size: 14279
+                      preview_size: 3429745
+                      duration: 22
 
-      
+  /api/album/cloudAlbum:
+    get:
+      summary: 云相册列表
+      tags:
+        - Folder
+      parameters:
+        - name: folder_id
+          in: query
+          description: 相册ID 
+          schema:
+            type: integer
+            format: int64
+          required: true
+      responses:
+        '200':
+          description: 相册列表
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FolderList'
 
+  /api/index/photo_list:    
+    get:
+      summary: 相册的图片列表
+      tags:
+        - Folder
+      parameters:
+        - name: jscoce
+          description: 微信登陆ID，必传   
+          in: query
+          schema:
+            type: string
+          required: true
+        - name: page
+          description: 第几页
+          in: query
+          schema:
+            type: integer
+            format: int64
+            nullable: true
+        - name: limit
+          description: 每页几条
+          in: query
+          schema:
+            type: integer
+            format: int64
+            nullable: true
+        - name: folder_id
+          description: 相册ID
+          in: query
+          schema:
+            type: integer
+            format: int64
+            nullable: true
+        - name: subfolder_id
+          description: 子相册ID
+          in: query
+          schema:
+            type: integer
+            format: int64
+            nullable: true
+        - name: uid
+          description: 用户ID
+          in: query
+          schema:
+            type: integer
+            format: int64
+            nullable: true
+        - name: share_id
+          description: share_id
+          in: query
+          schema:
+            type: integer
+            format: int64
+            nullable: true
+        - name: type
+          description: 图片类型 1：原片；2：精修；3：设计稿；4：视频
+          in: query
+          schema:
+            type: integer
+            format: int64
+            nullable: true
+            enum: [1, 2, 3, 4]
+        - name: split_date
+          description: 是否以日期为键来返回相册列表数据
+          in: query
+          schema:
+            type: integer
+            format: int64
+            nullable: true
+            enum: [0, 1]
 
+      responses:
+        '200':
+          description: 相册列表数据
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PhotoList'
+              examples:
+                List1:
+                  value:
+                    code: 0
+                    msg: success
+                    data:
+                    - folder_id: 51
+                      id: 1345
+                      file_name: A06I9119.JPG
+                      key: '09179481912bf99cf8f5011f99ad1d6e.JPG'
+                      thumb_img: "/uploads/thumb/20201126/e2530625dc36e5cba0c5c5015d18f6bc.JPG"
+                      preview_img: "/uploads/preview/20201126/e2530625dc36e5cba0c5c5015d18f6bc.JPG"
+                      file_size: 6897635
+                      create_time: 1606383862
+                      is_collect: 0
+                      is_like: 0
+                      date: '2020-11-26'
+                      width: 320
+                      height: 213
+                      like_num: 0
 
+                List2:
+                  value:
+                    code: 0
+                    msg: success
+                    data:
+                      '2020-11-27':
+                      - folder_id: 51
+                        id: 1608
+                        file_name: A06I7234.JPG
+                        key: e64f967f6ed076a45440a3f21fd5ecff.JPG
+                        thumb_img: "/uploads/thumb/20201127/f4d1158217b1da0b182c350fc1575cc1.JPG"
+                        preview_img: "/uploads/preview/20201127/f4d1158217b1da0b182c350fc1575cc1.JPG"
+                        file_size: 6453797
+                        create_time: 1606462428
+                        is_collect: 0
+                        is_like: 0
+                        date: '2020-11-27'
+                        width: 320
+                        height: 213
+                        like_num: 0
+
+                     
                 
 components:
   securitySchemes:
@@ -295,3 +495,147 @@ components:
           package: prepay_id=wx070914169218999b9e22bcdd1144b20000
           signType: MD5
           paySign: 9C443A2F9359195FD8DC7A9BBE2D1A90
+
+    Banners:
+      description: banner图
+      allOf:
+        - $ref: '#/components/schemas/Response'
+        - type: object
+          required:
+            - data
+          properties:
+            data:
+              type: object
+              properties:
+                id:
+                  type: integer
+                file_type:
+                  type: integer
+                  enum: [1, 0]
+                file_name:
+                  type: string
+                hash_code:
+                  type: string
+                md5_code:
+                  type: string
+                thumb_img:
+                  type: string
+                preview_img:
+                  type: string
+                create_time:
+                  type: string
+                group_id:
+                  type: integer
+                key:
+                  type: string
+                file_size:
+                  type: integer
+                is_horizontal:
+                  type: integer
+                thumb_size:
+                  type: integer
+                preview_size:
+                  type: integer
+                duration:
+                  type: integer
+                      
+                  
+    Folder:
+      description: 单个相册信息
+      type: object
+      properties:
+        folder_id: 
+          type: integer
+        folder_name: 
+          type: string
+        subfolder_id:
+          type: integer
+        album_name: 
+          type: string
+        num:
+          type: integer
+        cover: 
+          type: string
+
+    FolderList:
+      description: 相册列表数据
+      allOf:
+        - $ref: '#/components/schemas/Response'
+        - type: object
+          required:
+            - data
+          properties:
+            data:
+              type: object
+              properties:
+                list:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/Folder'
+      example:
+        code: 0
+        msg: success
+        data:
+        - folder_id: 561
+          folder_name: test的
+          type: 1
+          subfolder_id: 0
+          album_name: test的（原片）
+          num: 10
+          cover: http://cqc-cloud.test/uploads/thumb/20210206/97ff6bda1779e9ceb5c6b82d250ee174.jpg
+        - folder_id: 561
+          folder_name: test的
+          type: 2
+          subfolder_id: 0
+          album_name: test的（精修）
+          num: 10
+          cover: http://cqc-cloud.test/uploads/thumb/20210206/97ff6bda1779e9ceb5c6b82d250ee174.jpg
+
+    Photo:
+      description: 单个照片的信息
+      type: object
+      properties:
+        folder_id: 
+          type: integer
+        id: 
+          type: integer
+        file_name: 
+          type: string
+        key: 
+          type: string
+        thumb_img: 
+          type: string
+        preview_img: 
+          type: string
+        file_size: 
+          type: integer
+        create_time:
+          type: integer
+        is_collect:
+          type: integer
+        is_like: 
+          type: integer
+        date: 
+          type: string
+        width: 
+          type: integer
+        height:
+          type: integer
+        like_num:
+          type: integer
+
+    PhotoList:
+      description: 照片列表数据
+      allOf:
+        - $ref: '#/components/schemas/Response'
+        - type: object
+          required:
+            - data
+          properties:
+            data:
+              type: object
+              properties:
+                list:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/Photo'
