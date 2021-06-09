@@ -60,6 +60,14 @@ paths:
         - VIP
       summary: VIP状态
       description: 获取指定相册的VIP开通状态
+      parameters:
+        - name: folder_id
+          in: query
+          description: 相册ID 
+          schema:
+            type: integer
+            format: int64
+          required: true
       responses:
         '200':
           description: VIP状态响应
