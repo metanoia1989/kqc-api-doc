@@ -256,7 +256,7 @@ paths:
                 $ref: '#/components/schemas/FolderList'
 
   /api/index/photo_list:    
-    get:
+    post:
       summary: 相册的图片列表
       tags:
         - Folder
