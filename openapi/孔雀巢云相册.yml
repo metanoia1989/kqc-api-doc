@@ -261,7 +261,7 @@ paths:
       tags:
         - Folder
       parameters:
-        - name: jscoce
+        - name: jscode
           description: 微信登陆ID，必传   
           in: query
           schema:
