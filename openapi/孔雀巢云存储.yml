@@ -97,9 +97,9 @@ paths:
                 folder_id:
                   type: integer
                   description: 相册ID
-                subfolder_id:
-                  type: integer
-                  description: 子相册ID
+                email:
+                  type: string
+                  description: 邮件
               required:
                 - folder_id
       responses:
@@ -125,6 +125,29 @@ paths:
                   msg: success
                   data:
                     status_id: z2.01z201cbrwd343tatr00mur3pz0002kj
+
+        '201':
+          description: 压缩任务ID
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/Response'
+                  - type: object
+                    required:
+                      - data
+                    properties:
+                      data:
+                        type: object
+                        properties:
+                          pack_id:
+                            type: string
+                            description: 压缩任务ID
+                example:
+                  code: 0
+                  msg: success
+                  data:
+                    pack_id: 1
 
 
                 
