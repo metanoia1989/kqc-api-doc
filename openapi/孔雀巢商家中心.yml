@@ -42,6 +42,8 @@ tags:
     description: 工具相关
   - name: Works
     description: 作品相关
+  - name: Comment
+    description: 假评论相关
     
 paths:
   /studio/login:
@@ -103,7 +105,83 @@ paths:
               schema:
                 $ref: '#/components/schemas/LoginSuccess'
                 
-  
+  /studio/comment/choosePackage:
+    get:
+      description: 商家套餐选择
+      tags:
+        - Comment
+      responses:
+        '200':
+          description: 假评论接口下面的选择套餐接口
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/studio/comment/choosePackage'
+                  - type: object
+                    required:
+                      - data
+                    properties:
+                      code: 0
+                      msg: success
+                      data:
+                        type: array
+                        properties:
+                          code:
+                            type: integer
+                            description: code码
+                          msg:
+                            type: string
+                            description: 状态
+                          data:
+                            type: object
+                            properties:
+                              cloud_pay_total:
+                                type: number
+                                description: 云相册总充值额
+                              invitation_gift_total:
+                                type: number
+                                description: 喜帖总收礼额
+              example:
+                msg: success
+                code: 0
+                data:
+                  s_menu_id: 23
+                  s_menu_name: 【系统案例大理】古镇情缘复古潮流风
+                  s_menu_inrt:  <p><img src=\"/ueditor/php/upload/image/20180701/1530445775507904.jpg\" title=\"1530445775507904.jpg\" alt=\"8999大理 平台.jpg\"/><img src=\"/ueditor/php/upload/image/20180701/1530445800971012.jpg\" title=\"1530445800971012.jpg\" alt=\"8999大理 平台1.jpg\"/></p>
+                  s_menu_sid:  56
+
+  /studio/Comment/createCommentsImage:
+    get:
+      tags:
+        - Comment
+      summary: 商家中心假评论的上传图片接口
+      parameters:
+        - name: status
+          in: query
+          description: 图片状态
+          required: true
+          schema:
+            type: integer
+        - name: image
+          description: 上传的文件
+          in: query
+          schema:
+            type: file
+      responses:
+        '200':
+          description: 图片链接列表
+          content:
+            application/json:
+              schema:
+                $ref: '#/studio/comment/createCommentsImage'
+              example:
+                msg: success
+                code: 0
+                data:
+                  0: /public/static/studio_comment/20210618/202106181156281972
+                  1: /public/static/studio_comment/20210618/202106181156288225.png
+
   /studio/generalize/studioList:
     get:
       tags:
