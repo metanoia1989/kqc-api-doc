@@ -86,7 +86,7 @@ paths:
     post:
       tags:
         - Folder
-      summary: 相册压缩
+      summary: 压缩整个文件夹
       requestBody:
         required: true 
         content:
@@ -149,7 +149,54 @@ paths:
                   data:
                     pack_id: 1
 
-
+  /api/album/picked_files:
+    post:
+      tags:
+        - Folder
+      summary: 打包压缩文件
+      requestBody:
+        required: true 
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                folder_id:
+                  type: integer
+                  description: 相册ID
+                email:
+                  type: string
+                  description: 邮件
+                key:
+                  type: array
+                  description: 文件key数组
+              required:
+                - folder_id
+                  email
+                  key
+      responses:
+        '200':
+          description: 压缩任务ID
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/Response'
+                  - type: object
+                    required:
+                      - data
+                    properties:
+                      data:
+                        type: object
+                        properties:
+                          pack_id:
+                            type: string
+                            description: 压缩任务ID
+                example:
+                  code: 0
+                  msg: success
+                  data:
+                    pack_id: 1
                 
 components:
   securitySchemes:
