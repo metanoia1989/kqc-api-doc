@@ -38,6 +38,8 @@ tags:
     description: VIP
   - name: Folder
     description: 相册
+  - name: Message
+    description: 系统消息
 
 paths:
   /api/vip/setmenus:
@@ -375,7 +377,207 @@ paths:
                         height: 213
                         like_num: 0
 
-                     
+  /api/notify/sys_msg:
+    get:
+      summary: 系统消息列表                        
+      tags:
+        - Message
+      parameters:
+        - name: uid
+          description: 用户ID
+          in: query
+          schema:
+            type: integer
+          required: true
+        - name: page
+          description: 第几页
+          in: query
+          schema:
+            type: integer
+            format: int64
+            nullable: true
+        - name: limit
+          description: 每页几条
+          in: query
+          schema:
+            type: integer
+            format: int64
+            nullable: true
+      responses:
+        '200':
+          description: 系统消息列表
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                code: 0
+                msg: success
+                data:
+                  list:
+                    - id: 1
+                      uid: 1
+                      title: 'sdf '
+                      content: 'sdf '
+                      is_read: 1
+                      created_at: '2021-06-24 16:31:13'
+                  dataCount: 6
+                  current_page: 1
+                  current_size: 15
+                  count_page: 1
+
+  /api/notify/comment:
+    get:
+      summary: 相册留言列表 
+      tags:
+        - Message
+      parameters:
+        - name: uid
+          description: 用户ID
+          in: query
+          schema:
+            type: integer
+          required: true
+        - name: page
+          description: 第几页
+          in: query
+          schema:
+            type: integer
+            format: int64
+            nullable: true
+        - name: limit
+          description: 每页几条
+          in: query
+          schema:
+            type: integer
+            format: int64
+            nullable: true
+
+      responses:
+        '200':
+          description: 系统消息列表
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                code: 0
+                msg: success
+                data:
+                  list:
+                    - id: 7
+                      content: 急急急
+                      folder_id: 1823
+                      file_id: 14
+                      nickname: XXX
+                      avatar: "xxxxxxxxxxxx"
+                      is_read: 0
+                      created_at: null
+                  dataCount: 1
+                  current_page: 1
+                  current_size: 15
+                  count_page: 1
+
+  /api/notify/set_msg_read:
+    post:
+      summary: 设置消息已读     
+      tags:
+        - Message
+      requestBody:
+        required: true 
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: integer
+                  description: 消息ID
+              required:
+                - id
+      responses:
+        '200':
+          description: 设置已读成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ObjectResponse'
+                
+  /api/notify/set_comment_read:
+    post:
+      summary: 设置评论已读     
+      tags:
+        - Message
+      requestBody:
+        required: true 
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: integer
+                  description: 评论ID
+              required:
+                - id
+      responses:
+        '200':
+          description: 设置已读成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ObjectResponse'
+
+  /api/notify/del_sys_msg:
+    post:
+      summary: 删除系统消息
+      tags:
+        - Message
+      requestBody:
+        required: true 
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: integer
+                  description: 消息ID
+              required:
+                - id
+      responses:
+        '200':
+          description: 删除系统消息
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ObjectResponse'
+
+  /api/notify/del_comment:
+    post:
+      summary: 删除留言
+      tags:
+        - Message
+      requestBody:
+        required: true 
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: integer
+                  description: 留言ID
+              required:
+                - id
+      responses:
+        '200':
+          description: 删除系统消息
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ObjectResponse'
+        
                 
 components:
   securitySchemes:
